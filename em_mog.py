@@ -33,10 +33,7 @@ def em_mog(X, k, max_iter=20):
     # Initialize the means of the gaussians. You can use K-means!         #
     #######################################################################
     kmeans = KMeans(n_clusters=k, random_state=0,  max_iter=20).fit(X)
-    mu = kmeans.cluster_centers_   
-    #######################################################################
-    #                         END OF YOUR CODE                            #
-    #######################################################################
+    mu = kmeans.cluster_centers_      
 
     for l in range(max_iter): 
         # E-Step: compute the probabilities p(z==j|x; mu, sigma, phi)
@@ -48,8 +45,7 @@ def em_mog(X, k, max_iter=20):
         # Check convergence
         ll = log_likelihood(X, mu, sigma, phi)
         print('Iter: {}/{}, LL: {}'.format(l+1, max_iter, ll))
-        if ll/ll_prev > 0.999:
-        #if ll/ll_prev > 0.999:
+        if ll/ll_prev > 0.999:        
             print('EM has converged...')
             break
         ll_prev = ll
@@ -58,12 +54,14 @@ def em_mog(X, k, max_iter=20):
     exec_time = time.time()-start
     print('Number of iterations: {}, Execution time: {}s'.format(l+1, exec_time))
     
-    # Compute final assignment
+    # Computes final assignment
     w = e_step(X, mu, sigma, phi)
     
     return phi, mu, sigma, w
 
-
+    #######################################################################
+    #                         END OF YOUR CODE                            #
+    #######################################################################
 
 def log_likelihood(X, mu, sigma, phi):
     """
