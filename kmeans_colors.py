@@ -21,10 +21,7 @@ def kmeans_colors(img, k, max_iter=100):
     """
 
     img_cl = None
-    #n_colors = 64
-    # Convert to floats instead of the default 8 bits integer coding. Dividing by
-    # 255 is important so that plt.imshow behaves works well on float data (need to
-    # be in the range [0-1])
+    
     img = np.array(img, dtype=np.float64) / 255
     
     # Load Image and transform to a 2D numpy array.
@@ -33,9 +30,8 @@ def kmeans_colors(img, k, max_iter=100):
     img = np.reshape(img, (w * h, d)) 
     #######################################################################
     # TODO:                                                               #
-    # Perfom k-means clustering of the pixel values of the image img.     #
+    # Perfom k-means clustering of on the pixel values of the image img.  #
     #######################################################################
-    
     image_array_sample = shuffle(img, random_state=0)[:1000]
     kmeans = KMeans(n_clusters = k, random_state=0, max_iter= 100).fit(image_array_sample)    
     
@@ -51,11 +47,12 @@ def kmeans_colors(img, k, max_iter=100):
         for j in range(h):
             img_cl[i][j] = clusters_[labels[label_idx]]
             label_idx += 1
+    #print(img_cl)
     return img_cl
+    pass
     
     #######################################################################
     #                         END OF YOUR CODE                            #
     #######################################################################
 
     return img_cl
-
