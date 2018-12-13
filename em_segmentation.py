@@ -17,21 +17,10 @@ def em_segmentation(img, k, max_iter=20):
 
     """
     
-    label_img = None
-    
-    #######################################################################
-    # TODO:                                                               #
-    # 1st: Augment the pixel features with their 2D coordinates to get    #
-    #      features of the form RGBXY (see np.meshgrid)                   #
-    # 2nd: Fit the MoG to the resulting data using                        #
-    #      sklearn.mixture.GaussianMixture                                #
-    # 3rd: Predict the assignment of the pixels to the gaussian and       #  
-    #      generate the label-image                                       #
-    #######################################################################
+    label_img = None        
     
     #1st Step
-    #Augment the pixel features with their 2D coordinates to get features of the form RGBXY (see np.meshgrid)
-    
+    #Augment the pixel features with their 2D coordinates to get features of the form RGBXY (see np.meshgrid)    
     img = np.array(img, dtype=np.float64) / 255        
     w, h, d = original_shape = tuple(img.shape)
     assert d == 3  
@@ -45,8 +34,7 @@ def em_segmentation(img, k, max_iter=20):
 			covariance_type="full").fit(image_array_sample)
 
     #3rd Step       
-    #Predict the assignment of the pixels to the gaussian and generate the label-image	
-    	
+    #Predict the assignment of the pixels to the gaussian and generate the label-image	    	
     labels = clf.predict(img)   
     pixels = clf.means_    
     d = pixels.shape[1]
@@ -56,13 +44,5 @@ def em_segmentation(img, k, max_iter=20):
         for j in range(h):
             label_img[i][j] = pixels[labels[label_idx]]
             label_idx += 1
-    
-    
-    pass
-    
-    #######################################################################
-    #                         END OF YOUR CODE                            #
-    #######################################################################
-
-    return label_img
-                    
+        
+    return label_img                    
