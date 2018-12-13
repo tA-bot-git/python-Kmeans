@@ -1,6 +1,5 @@
 import numpy as np
 from sklearn.mixture import GaussianMixture
-from sklearn.utils import shuffle
 
 import time
 
@@ -19,7 +18,7 @@ def em_segmentation(img, k, max_iter=20):
     """
     
     label_img = None
-
+    
     #######################################################################
     # TODO:                                                               #
     # 1st: Augment the pixel features with their 2D coordinates to get    #
@@ -29,6 +28,7 @@ def em_segmentation(img, k, max_iter=20):
     # 3rd: Predict the assignment of the pixels to the gaussian and       #  
     #      generate the label-image                                       #
     #######################################################################
+    
     #1st Step
     #Augment the pixel features with their 2D coordinates to get features of the form RGBXY (see np.meshgrid)
     
@@ -40,7 +40,9 @@ def em_segmentation(img, k, max_iter=20):
     #2nd Step
     #Fit the MoG to the resulting data using sklearn.mixture.GaussianMixture 
     image_array_sample = shuffle(img, random_state=0)[:1000]
-    clf = GaussianMixture(n_components = k, max_iter = 50,  covariance_type="full").fit(image_array_sample)
+    clf = GaussianMixture(n_components = k, 
+			max_iter = 50, 
+			covariance_type="full").fit(image_array_sample)
 
     #3rd Step       
     #Predict the assignment of the pixels to the gaussian and generate the label-image	
@@ -54,6 +56,10 @@ def em_segmentation(img, k, max_iter=20):
         for j in range(h):
             label_img[i][j] = pixels[labels[label_idx]]
             label_idx += 1
+    
+    
+    pass
+    
     #######################################################################
     #                         END OF YOUR CODE                            #
     #######################################################################
