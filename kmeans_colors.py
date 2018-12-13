@@ -17,7 +17,6 @@ def kmeans_colors(img, k, max_iter=100):
 
     Returns:
         img_cl:  The color quantized image of shape [h, w, 3]
-
     """
 
     img_cl = None
@@ -28,10 +27,8 @@ def kmeans_colors(img, k, max_iter=100):
     w, h, d = original_shape = tuple(img.shape)
     assert d == 3
     img = np.reshape(img, (w * h, d)) 
-    #######################################################################
-    # TODO:                                                               #
-    # Perfom k-means clustering of on the pixel values of the image img.  #
-    #######################################################################
+    
+    #KMeans
     image_array_sample = shuffle(img, random_state=0)[:1000]
     kmeans = KMeans(n_clusters = k, random_state=0, max_iter= 100).fit(image_array_sample)    
     
@@ -50,9 +47,5 @@ def kmeans_colors(img, k, max_iter=100):
     #print(img_cl)
     return img_cl
     pass
-    
-    #######################################################################
-    #                         END OF YOUR CODE                            #
-    #######################################################################
 
     return img_cl
