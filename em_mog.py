@@ -28,10 +28,7 @@ def em_mog(X, k, max_iter=20):
     ll_prev = float('inf')
     start = time.time()
     
-    #######################################################################
-    # TODO:                                                               #
-    # Initialize the means of the gaussians. You can use K-means!         #
-    #######################################################################
+    #Perform KMeans to get the centers of the clusters
     kmeans = KMeans(n_clusters=k, random_state=0,  max_iter=20).fit(X)
     mu = kmeans.cluster_centers_      
 
@@ -57,11 +54,8 @@ def em_mog(X, k, max_iter=20):
     # Computes final assignment
     w = e_step(X, mu, sigma, phi)
     
-    return phi, mu, sigma, w
+    return phi, mu, sigma, w    
 
-    #######################################################################
-    #                         END OF YOUR CODE                            #
-    #######################################################################
 
 def log_likelihood(X, mu, sigma, phi):
     """
@@ -71,19 +65,12 @@ def log_likelihood(X, mu, sigma, phi):
     ll = 0.0
     n, p = X.shape
     k = len(phi)
-    #######################################################################
-    # TODO:                                                               #
-    # Compute the log-likelihood of the data under the current model.     #
-    # This is used to check for convergnence of the algorithm.            #
-    #######################################################################
+    
     for i in range(n):
         temp = 0
         for j in range(k):
             temp += phi[j] * mvn(mu[j].T, sigma[j]).pdf(X[i])
-        ll += np.log(temp)    
-    #######################################################################
-    #                         END OF YOUR CODE                            #
-    #######################################################################
+        ll += np.log(temp)        
     
     return ll
                     
@@ -95,13 +82,7 @@ def e_step(X, mu, sigma, phi):
     Returns:
         w:  A vector of probabilities p(z==j|x; mu, sigma, phi) for the k 
             gaussians per example of shape [n, k] 
-    """    
-    #######################################################################
-    # TODO:                                                               #
-    # Perform the E-step of the EM algorithm.                             #
-    # Use scipy.stats.multivariate_normal.pdf(...) to compute the pdf of  #
-    # of a gaussian with the current parameters.                          # 
-    #######################################################################
+    """        
     n, p = X.shape        
     k=len(phi)
     w = np.zeros((k, n))
@@ -109,24 +90,15 @@ def e_step(X, mu, sigma, phi):
     for j in range(k):
         for i in range(n):
             w[j, i] = phi[j] * mvn(mu[j], sigma[j]).pdf(X[i]) #No Error
-    w /= w.sum(0)        
-    #######################################################################
-    #                         END OF YOUR CODE                            #
-    #######################################################################
+    w /= w.sum(0)            
     
     return w
 
 
 def m_step(w, X, mu, sigma, phi, k):
     """
-    Computes the M-step of the EM algorithm.
-    
-    """
-    #######################################################################
-    # TODO:                                                               #
-    # Update all the model parameters as per the M-step of the EM         #
-    # algorithm.
-    #######################################################################
+    Computes the M-step of the EM algorithm.    
+    """    
     n, p = X.shape  
     phi = np.zeros(k)
     for j in range(len(mu)):
@@ -145,11 +117,6 @@ def m_step(w, X, mu, sigma, phi, k):
         for i in range(n):
             ys = np.reshape(X[i]- mu[j], (2,1)) #No error
             sigma[j] += w[j, i] * np.dot(ys, ys.T)
-        sigma[j] /= w[j,:].sum()    
-    #######################################################################
-    #                         END OF YOUR CODE                            #
-    #######################################################################
+        sigma[j] /= w[j,:].sum()     
     
-    return phi, mu, sigma
-        
-        
+    return phi, mu, sigma                
